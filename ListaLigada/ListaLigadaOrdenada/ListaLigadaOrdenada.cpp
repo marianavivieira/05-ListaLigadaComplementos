@@ -70,7 +70,7 @@ void menu()
 
 void inicializar()
 {
-	// se a lista já possuir elementos
+	// se a lista jï¿½ possuir elementos
 // libera a memoria ocupada
 	NO* aux = primeiro;
 	while (aux != NULL) {
@@ -124,30 +124,82 @@ void inserirElemento()
 	cout << "Digite o elemento: ";
 	cin >> novo->valor;
 	novo->prox = NULL;
+	novo->valor = valor;
 
-	if (primeiro == NULL)
+	if (primeiro == NULL|| primeiro->valor > valor) 
 	{
+		novo->prox = primeiro;
 		primeiro = novo;
 	}
 	else
 	{
-		// procura o final da lista
-		NO* aux = primeiro;
-		while (aux->prox != NULL) {
-			aux = aux->prox;
-		}
-		aux->prox = novo;
-	}
+NO* atual = primeiro;
+        NO* anterior = NULL;
+        while (atual != NULL && atual->valor < valor) {
+            anterior = atual;
+            atual = atual->prox;
+        }
+        
+        if (anterior != NULL && anterior->valor == valor) {
+            free(novo);
+            cout << "Elemento ja existe na lista!\n";
+            return;
+        }
+        novo->prox = atual;
+        anterior->prox = novo;
+    }
 }
 
 void excluirElemento()
 {
+    int valor;
+    cout << "Digite o elemento a excluir: ";
+    cin >> valor;
 
+    if (primeiro == NULL) {
+        cout << "Lista vazia!\n";
+        return;
+    }
+
+    if (primeiro->valor == valor) {
+        NO* temp = primeiro;
+        primeiro = primeiro->prox;
+        free(temp);
+        cout << "Elemento removido!\n";
+        return;
+    }
+
+    NO* atual = primeiro;
+    NO* anterior = NULL;
+    while (atual != NULL && atual->valor < valor) {
+        anterior = atual;
+        atual = atual->prox;
+    }
+
+    if (atual == NULL || atual->valor != valor) {
+        cout << "Elemento nao encontrado!\n";
+        return;
+    }
+
+    anterior->prox = atual->prox;
+    free(atual);
+    cout << "Elemento removido!\n";
 }
 
 void buscarElemento()
 {
-
+ int valor;
+    cout << "Digite o elemento a buscar: ";
+    cin >> valor;
+    
+    NO* aux = primeiro;
+    while (aux != NULL && aux->valor <= valor) {
+        if (aux->valor == valor) {
+            cout << "Elemento encontrado!\n";
+            return;
+        }
+        aux = aux->prox;
+    }
+    cout << "Elemento nao encontrado!\n";
 }
-
 
